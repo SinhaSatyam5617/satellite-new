@@ -54,8 +54,6 @@ We combine:
 -  Machine Learning for prediction  
 -  Time-series analysis for trend detection  
 -  GeoAI for intelligent insights  
-
-Result: A unified environmental intelligence platform.
 """)
 
 st.divider()
@@ -117,8 +115,6 @@ Pipeline:
 3. Feature extraction (NDVI, rainfall, temperature)  
 4. Rules-based AI logic and ML models process data ( We have used ML algorithm in one tool)
 5. Results visualized and interpreted  
-
-Designed as a modular and scalable system.
 """)
 
 st.divider()
