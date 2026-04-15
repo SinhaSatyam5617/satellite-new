@@ -81,7 +81,7 @@ if st.button(" Analyze Trends", use_container_width=True):
         st.warning("⚠️ Invalid date range")
         st.stop()
 
-    with st.spinner("🛰️ Fetching satellite time-series..."):
+    with st.spinner("🛰️ Fetching satellite time-series..Depending on the data, it may take 30 seconds to 5 minutes"):
 
         try:
             dates, ndvi, rain, temp = [], [], [], []
