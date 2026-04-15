@@ -1,0 +1,9 @@
+streamlit
+earthengine-api
+folium
+streamlit-folium
+pandas
+numpy
+langchain-openai
+openai
+setuptools==68.0.0
