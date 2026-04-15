@@ -22,7 +22,7 @@ from geo_langchain import run_ai
 import streamlit as st
 
 def show():
-    st.title("🌱 Satellite Vegetation Module")
+    st.title(" Satellite Vegetation Module")
 
 # ----------------------------------
 # 🎨 CONFIG
@@ -46,7 +46,7 @@ st.markdown("---")
 # ----------------------------------
 # 🗺️ MAP
 # ----------------------------------
-st.subheader("🗺️ Select Location")
+st.subheader(" Select Location")
 
 m = folium.Map(location=[26.85, 80.95], zoom_start=5)
 map_data = st_folium(m, height=400)
@@ -61,7 +61,7 @@ if map_data and map_data.get("last_clicked"):
 # ----------------------------------
 # 📅 DATE
 # ----------------------------------
-st.subheader("📅 Date Range")
+st.subheader(" Date Range")
 
 col1, col2 = st.columns(2)
 
@@ -122,7 +122,7 @@ if st.button("🚀 Analyze NDVI", use_container_width=True):
             # ----------------------------------
             # 🤖 AI SECTION (MATCH WORKING FILE)
             # ----------------------------------
-            st.subheader("🤖 AI Insight")
+            st.subheader(" AI Insight")
 
             try:
                 question = f"""
@@ -147,14 +147,14 @@ Explain vegetation health and farming suitability.
                 c1.metric("Risk Level", ai.get("risk_level", "N/A"))
                 c2.metric("Suitability Score", ai.get("suitability_score", 0))
 
-                st.markdown("### 🧠 Summary")
+                st.markdown("###  Summary")
                 st.write(ai.get("summary", ""))
 
-                st.markdown("### 📊 Key Factors")
+                st.markdown("### Key Factors")
                 for f in ai.get("key_factors") or []:
                     st.write(f"- {f}")
 
-                st.markdown("### ✅ Recommendations")
+                st.markdown("###  Recommendations")
                 for r in ai.get("recommendations") or []:
                     st.write(f"- {r}")
 
