@@ -1,18 +1,13 @@
 import ee
-
-# ✅ Your project ID
-GEE_PROJECT_ID = "satellite-new-489422"
-
+import streamlit as st
 
 def init_gee():
-    """
-    Initialize Google Earth Engine safely
-    """
     try:
-        # Try normal init
-        ee.Initialize(project=GEE_PROJECT_ID)
-
-    except Exception:
-        # If not authenticated
-        ee.Authenticate()
-        ee.Initialize(project=GEE_PROJECT_ID)
+        # Check if already initialized
+        ee.Number(1).getInfo()
+    except:
+        credentials = ee.ServiceAccountCredentials(
+            st.secrets["gee"]["service_account"],
+            key_data=st.secrets["gee"]["private_key"]
+        )
+        ee.Initialize(credentials)
