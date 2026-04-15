@@ -93,7 +93,7 @@ This platform uses **OpenAI API** to:
  **Setup API Key:**
 """)
 
-st.code('export OPENAI_API_KEY="your_api_key_here"', language='bash') - Though we have already done this part
+st.code('export OPENAI_API_KEY="your_api_key_here"', language='bash') #Though we have already done this part
 
 st.markdown("""
  Best Practice:
