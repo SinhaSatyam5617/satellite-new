@@ -69,8 +69,7 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("🌱 Satellite Vegetation Module")
-    st.write("Analyze vegetation health using NDVI from satellite data.  
-    Detect deforestation, crop stress, and environmental degradation trends.")
+    st.write("Analyze vegetation health using NDVI from satellite data. Detect deforestation, crop stress, and environmental degradation trends.")
 
     st.subheader("📊 Time-Series Climate Analysis")
     st.write("Track rainfall, temperature, and vegetation changes over time.  
