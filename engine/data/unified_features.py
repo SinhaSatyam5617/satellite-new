@@ -1,3 +1,5 @@
+import ee
+import streamlit as st
 def init_gee():
     try:
         ee.Initialize(project="satellite-new-489422")
