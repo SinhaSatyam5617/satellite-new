@@ -17,7 +17,7 @@ from engine.li_models.predict_li import predict_location_range
 import streamlit as st
 
 def show():
-    st.title("📍 Location Intelligence Tool")
+    st.title(" Location Intelligence Tool")
 
 # -----------------------------
 # PAGE CONFIG
@@ -34,7 +34,7 @@ The system integrates satellite data processing with rule-based and AI-driven in
 # -----------------------------
 # INPUT SECTION
 # -----------------------------
-st.subheader("📍 Enter Location & Time Range")
+st.subheader(" Enter Location & Time Range")
 
 col1, col2 = st.columns(2)
 
@@ -62,7 +62,7 @@ if start_date > end_date:
 # -----------------------------
 # RUN BUTTON
 # -----------------------------
-if st.button("🚀 Analyze Location"):
+if st.button("Analyze Location"):
 
     with st.spinner("Fetching multi-day satellite data... ⏳"):
 
@@ -89,7 +89,7 @@ if st.button("🚀 Analyze Location"):
     # -----------------------------
     # ENVIRONMENT DATA
     # -----------------------------
-    st.subheader("🌱 Aggregated Environment Data")
+    st.subheader(" Aggregated Environment Data")
     st.json(result["environment"])
 
     # -----------------------------
@@ -107,24 +107,24 @@ if st.button("🚀 Analyze Location"):
 
     col1, col2, col3 = st.columns(3)
 
-    col1.metric("🔥 Heat Score", preds["heat_score"])
-    col2.metric("🌊 Flood Score", preds["flood_score"])
-    col3.metric("🌱 Vegetation Score", preds["veg_score"])
+    col1.metric(" Heat Score", preds["heat_score"])
+    col2.metric(" Flood Score", preds["flood_score"])
+    col3.metric(" Vegetation Score", preds["veg_score"])
 
     # -----------------------------
     # INSIGHTS
     # -----------------------------
-    st.subheader("🧠 Risk Insights")
+    st.subheader(" Risk Insights")
 
     insights = result["insights"]
 
     col1, col2, col3 = st.columns(3)
 
-    col1.success(f"🔥 Heat Risk: {insights['heat_risk']}")
-    col2.success(f"🌊 Flood Risk: {insights['flood_risk']}")
-    col3.success(f"🌱 Vegetation: {insights['vegetation_status']}")
+    col1.success(f" Heat Risk: {insights['heat_risk']}")
+    col2.success(f" Flood Risk: {insights['flood_risk']}")
+    col3.success(f" Vegetation: {insights['vegetation_status']}")
 
-    st.success("✅ Multi-day analysis complete")
+    st.success(" Multi-day analysis complete")
 
     st.markdown("### Processing Workflow")
 
