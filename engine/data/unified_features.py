@@ -1,17 +1,19 @@
 import ee
-from datetime import datetime, timedelta
+import streamlit as st
 
-# ----------------------------------
-# 🌍 INIT (SAFE)
-# ----------------------------------
 def init_gee():
     try:
         ee.Initialize(project="satellite-new-489422")
     except:
-        ee.Authenticate()
-        ee.Initialize(project="satellite-new-489422")
+        service_account = st.secrets["gee"]["service_account"]
+        private_key = st.secrets["gee"]["private_key"]
 
-init_gee()
+        credentials = ee.ServiceAccountCredentials(
+            service_account,
+            key_data=private_key
+        )
+
+        ee.Initialize(credentials, project="satellite-new-489422")
 
 # ----------------------------------
 # 🛠 HELPERS
