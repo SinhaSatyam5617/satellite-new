@@ -1,20 +1,8 @@
 import ee
-import streamlit as st
 from datetime import datetime, timedelta
 
-# ----------------------------------
-# 🌍 INIT GEE (FINAL)
-# ----------------------------------
-def init_gee():
-    try:
-        # ✅ check if already initialized
-        ee.Number(1).getInfo()
-    except:
-        credentials = ee.ServiceAccountCredentials(
-            st.secrets["gee"]["service_account"],
-            key_data=st.secrets["gee"]["private_key"]
-        )
-        ee.Initialize(credentials)
+# ✅ Import init from separate file
+from engine.data.gee_init import init_gee
 
 
 # ----------------------------------
@@ -118,7 +106,7 @@ def get_pollution(geom, start, end):
 # ----------------------------------
 def get_unified_features(lat, lon, start_date=None, end_date=None, days=30):
 
-    # 🔥 CRITICAL FIX (THIS WAS MISSING)
+    # 🔥 CRITICAL (INITIALIZE GEE FIRST)
     init_gee()
 
     start, end = get_date_range(start_date, end_date, days)
