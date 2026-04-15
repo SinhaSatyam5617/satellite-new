@@ -71,4 +71,4 @@ To get optimal performance:
 - Wait a few seconds between heavy operations
 """)
 
-st.success(" The system is optimized within these constraints to deliver accurate insights.")
+
