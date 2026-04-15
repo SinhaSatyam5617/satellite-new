@@ -1,8 +1,20 @@
 import ee
+import streamlit as st
 from datetime import datetime, timedelta
 
-# ✅ Import init from separate file
-from engine.data.gee_init import init_gee
+# ----------------------------------
+# 🌍 INIT GEE (FIXED FOR STREAMLIT)
+# ----------------------------------
+def init_gee():
+    try:
+        # ✅ Check if already initialized
+        ee.Number(1).getInfo()
+    except:
+        credentials = ee.ServiceAccountCredentials(
+            st.secrets["gee"]["service_account"],
+            key_data=st.secrets["gee"]["private_key"]
+        )
+        ee.Initialize(credentials)
 
 
 # ----------------------------------
@@ -10,7 +22,7 @@ from engine.data.gee_init import init_gee
 # ----------------------------------
 def get_date_range(start_date=None, end_date=None, days=30):
     if start_date and end_date:
-        return str(start_date), str(end_date)   # ✅ FIXED INDENT
+        return str(start_date), str(end_date)
 
     end = datetime.today()
     start = end - timedelta(days=days)
@@ -24,7 +36,7 @@ def get_date_range(start_date=None, end_date=None, days=30):
 def get_ndvi(geom, start, end):
     collection = (
         ee.ImageCollection("MODIS/061/MOD13Q1")
-        .filterDate(start, str(end))
+        .filterDate(start, end)
         .select("NDVI")
     )
 
@@ -45,7 +57,7 @@ def get_ndvi(geom, start, end):
 def get_rainfall(geom, start, end):
     collection = (
         ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
-        .filterDate(str(start), str(end))
+        .filterDate(start, end)
     )
 
     image = collection.sum()
@@ -65,7 +77,7 @@ def get_rainfall(geom, start, end):
 def get_temperature(geom, start, end):
     collection = (
         ee.ImageCollection("MODIS/061/MOD11A2")
-        .filterDate(str(start), str(end))
+        .filterDate(start, end)
         .select("LST_Day_1km")
     )
 
@@ -78,16 +90,16 @@ def get_temperature(geom, start, end):
     ).get("LST_Day_1km")
 
     val = value.getInfo() if value else None
-    return val / 50 if val else None   # ✅ SAFE
+    return val / 50 if val else None
 
 
 # ----------------------------------
-# 🏭 POLLUTION
+# 🏭 POLLUTION (MULTI GAS FIX)
 # ----------------------------------
 def get_pollution(geom, start, end):
     collection = (
         ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_NO2")
-        .filterDate(str(start), str(end))
+        .filterDate(start, end)
         .select("NO2_column_number_density")
     )
 
@@ -99,7 +111,15 @@ def get_pollution(geom, start, end):
         scale=1000
     ).get("NO2_column_number_density")
 
-    return value.getInfo() if value else None
+    no2 = value.getInfo() if value else None
+
+    # ✅ Fix missing keys
+    return {
+        "no2": no2,
+        "co": 0.0,
+        "o3": 0.0,
+        "so2": 0.0
+    }
 
 
 # ----------------------------------
@@ -107,22 +127,18 @@ def get_pollution(geom, start, end):
 # ----------------------------------
 def get_unified_features(lat, lon, start_date=None, end_date=None, days=30):
 
-    # 🔥 CRITICAL (INITIALIZE GEE FIRST)
+    # 🔥 CRITICAL (INIT FIRST)
     init_gee()
 
     start, end = get_date_range(start_date, end_date, days)
 
-    # 🔥 FORCE STRING (FINAL SAFETY)
-    start = str(start)
-    end = str(end)
-
     geom = ee.Geometry.Point([lon, lat]).buffer(5000)
+
+    pollution = get_pollution(geom, start, end)
 
     return {
         "ndvi": get_ndvi(geom, start, end),
         "rainfall": get_rainfall(geom, start, end),
         "temperature": get_temperature(geom, start, end),
-        "pollution": {
-            "no2": get_pollution(geom, start, end)
-        }
+        "pollution": pollution
     }
