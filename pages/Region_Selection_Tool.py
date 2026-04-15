@@ -7,7 +7,7 @@ from folium.plugins import Draw
 import streamlit as st
 
 def show():
-    st.title("🧭 Region Selection Tool")
+    st.title("Region Selection Tool")
 
 st.set_page_config(layout="wide")
 st.title("Region Selection Tool")
@@ -52,7 +52,7 @@ if map_data and map_data.get("last_active_drawing"):
 
 # Info
 if "coords" in st.session_state:
-    st.info("👉 Go to 'Analyze Page' → ready 🚀")
+    pass
 
 st.markdown("### Use Cases")
 
