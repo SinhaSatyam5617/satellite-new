@@ -2,7 +2,7 @@ import streamlit as st
 
 st.set_page_config(page_title="Future Integrations", layout="wide")
 
-st.title("🚀 Future Integrations & Research Directions")
+st.title(" Future Integrations & Research Directions")
 
 st.markdown("""
 This platform is designed with a modular architecture to support continuous enhancements.  
@@ -14,7 +14,7 @@ st.divider()
 # -------------------------
 # DL FOR AERIAL IMAGES
 # -------------------------
-st.header("🧠 Deep Learning for Aerial Image Analysis")
+st.header("Deep Learning for Aerial Image Analysis")
 
 st.markdown("""
 We are developing deep learning models for high-resolution satellite and aerial imagery:
@@ -30,7 +30,7 @@ These models will enable **pixel-level understanding of Earth observation data**
 # -------------------------
 # ML MODEL IMPROVEMENTS
 # -------------------------
-st.header("📊 Advanced ML Models for Climate Intelligence")
+st.header(" Advanced ML Models for Climate Intelligence")
 
 st.markdown("""
 Current ML models will be enhanced with:
@@ -61,24 +61,6 @@ This enables:
 - Seasonal trend prediction  
 - Climate anomaly detection  
 - Long-term environmental forecasting  
-""")
-
-# -------------------------
-# LLM + GEO DATA FUSION
-# -------------------------
-st.header(" LLM + Geospatial Data Fusion")
-
-st.markdown("""
-We are integrating LLMs with structured geospatial pipelines:
-
-- Natural language → query translation for satellite data
-- Context-aware environmental reasoning
-- Multi-step analytical workflows using LLM agents
-
-Focus areas:
-- Improving response accuracy  
-- Reducing hallucinations via structured inputs  
-- Grounding LLM outputs with real satellite data  
 """)
 
 # -------------------------
