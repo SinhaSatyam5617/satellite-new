@@ -18,7 +18,7 @@ from engine.data.unified_features import get_unified_features
 import streamlit as st
 
 def show():
-    st.title("🌦 Weather Intelligence Module")
+    st.title(" Weather Intelligence Module")
 # SAFE AI
 try:
     from geo_langchain import run_ai
@@ -45,7 +45,7 @@ st.markdown("---")
 # ----------------------------------
 # MAP
 # ----------------------------------
-st.subheader("🗺️ Select Location")
+st.subheader(" Select Location")
 
 m = folium.Map(location=[26.85, 80.95], zoom_start=5)
 map_data = st_folium(m, height=400)
@@ -59,7 +59,7 @@ if map_data and map_data.get("last_clicked"):
 # ----------------------------------
 # DATE
 # ----------------------------------
-st.subheader("📅 Date Range")
+st.subheader("Date Range")
 
 col1, col2 = st.columns(2)
 start_date = col1.date_input("Start Date", datetime(2023,1,1))
@@ -68,7 +68,7 @@ end_date   = col2.date_input("End Date", datetime.today())
 # ----------------------------------
 # RUN
 # ----------------------------------
-if st.button("🌦️ Analyze Weather", use_container_width=True):
+if st.button(" Analyze Weather", use_container_width=True):
 
     if lat is None:
         st.warning("Select location")
@@ -103,30 +103,30 @@ if st.button("🌦️ Analyze Weather", use_container_width=True):
             st.markdown("---")
 
             # RULES
-            st.subheader("📊 Climate Analysis")
+            st.subheader("Climate Analysis")
 
             if rain > 150:
-                st.write("🌊 Flood risk")
+                st.write(" Flood risk")
             elif rain < 10:
-                st.write("🌵 Drought risk")
+                st.write(" Drought risk")
 
             if temp > 35:
-                st.write("🔥 Heatwave")
+                st.write(" Heatwave")
             elif temp < 15:
-                st.write("❄️ Cold")
+                st.write("Cold")
 
             if humidity > 80:
-                st.write("💧 High humidity")
+                st.write(" High humidity")
 
             if anomaly > 3:
-                st.write("📈 Above normal temp")
+                st.write(" Above normal temp")
             elif anomaly < -3:
-                st.write("📉 Below normal")
+                st.write(" Below normal")
 
             st.markdown("---")
 
             # AI
-            st.subheader("🤖 AI Insight")
+            st.subheader(" AI Insight")
 
             if AI_AVAILABLE:
                 try:
