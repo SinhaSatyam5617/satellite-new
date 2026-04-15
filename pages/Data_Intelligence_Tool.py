@@ -1,39 +1,39 @@
 import streamlit as st
 import ee
 from datetime import date
-import streamlit as st
 
+# ✅ IMPORT CLEAN INIT
+from engine.data.gee_init import init_gee
+
+# -----------------------------
+# PAGE FUNCTION
+# -----------------------------
 def show():
     st.title("📊 Data Intelligence Tool")
-# -----------------------------
-# 🌍 INIT
-# -----------------------------
-try:
-    ee.Initialize(project="satellite-new-489422")
-except:
-    ee.Authenticate()
-    ee.Initialize(project="satellite-new-489422")
 
+# -----------------------------
+# 🌍 INIT (FIXED)
+# -----------------------------
+init_gee()   # 🔥 THIS REPLACES ee.Authenticate()
+
+# -----------------------------
+# CONFIG
+# -----------------------------
 st.set_page_config(layout="wide")
 st.title("Data Intelligence & Extraction Engine")
 
 st.markdown("---")
 st.markdown("""
 This module extracts pixel-level data from multiple satellite datasets to generate a unified environmental profile for any location.  
-It applies temporal aggregation and statistical reduction on optical, radar, climatic, and atmospheric variables.  
-All outputs represent calibrated satellite-derived metrics over the selected region and time window.
 """)
 
 st.markdown("---")
-# # =============================
-# 📍 EXTRACTION TOOL + ENGINE
+
 # =============================
-st.markdown("---")
+# 📍 INPUTS
+# =============================
 st.header("Live Data Extraction")
 
-# -----------------------------
-# INPUTS
-# -----------------------------
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -51,31 +51,32 @@ with col5:
     end_date = st.date_input("End Date", date(2023, 2, 1))
 
 # -----------------------------
-# GEOMETRY + REDUCER
-# -----------------------------
-geom = ee.Geometry.Point([lon, lat]).buffer(5000)
-
-def get_reducer():
-    return {
-        "mean": ee.Reducer.mean(),
-        "median": ee.Reducer.median(),
-        "max": ee.Reducer.max()
-    }[agg]
-
-reducer = get_reducer()
-
-# -----------------------------
 # RUN BUTTON
 # -----------------------------
 if st.button("Extract Data", type="primary"):
 
     with st.spinner("Extracting multi-satellite intelligence..."):
 
-        start = start_date.strftime("%Y-%m-%d")
-        end   = end_date.strftime("%Y-%m-%d")
+        # 🔥 SAFE INIT BEFORE EE USE
+        init_gee()
+
+        # 🔥 FIX DATE FORMAT
+        start = str(start_date)
+        end   = str(end_date)
+
+        geom = ee.Geometry.Point([lon, lat]).buffer(5000)
+
+        def get_reducer():
+            return {
+                "mean": ee.Reducer.mean(),
+                "median": ee.Reducer.median(),
+                "max": ee.Reducer.max()
+            }[agg]
+
+        reducer = get_reducer()
 
         # -----------------------------
-        # Sentinel-2 (Bands)
+        # Sentinel-2
         # -----------------------------
         try:
             s2 = ee.ImageCollection("COPERNICUS/S2_SR_HARMONIZED") \
@@ -88,7 +89,7 @@ if st.button("Extract Data", type="primary"):
             s2_stats = {"error": "No Data"}
 
         # -----------------------------
-        # CHIRPS (Rainfall)
+        # CHIRPS
         # -----------------------------
         try:
             chirps = ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY") \
@@ -104,7 +105,7 @@ if st.button("Extract Data", type="primary"):
             rain_stats = {"error": "No Data"}
 
         # -----------------------------
-        # ERA5 (Weather)
+        # ERA5
         # -----------------------------
         try:
             era5 = ee.ImageCollection("ECMWF/ERA5_LAND/DAILY_AGGR") \
@@ -120,7 +121,7 @@ if st.button("Extract Data", type="primary"):
             era_stats = {"error": "No Data"}
 
         # -----------------------------
-        # Sentinel-5P (Pollution)
+        # Sentinel-5P
         # -----------------------------
         try:
             s5p = ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_NO2") \
@@ -135,9 +136,9 @@ if st.button("Extract Data", type="primary"):
         except:
             s5p_stats = {"error": "No Data"}
 
-        # =============================
-        # 📊 RESULTS (2 PER ROW)
-        # =============================
+        # -----------------------------
+        # RESULTS
+        # -----------------------------
         st.markdown("---")
         st.subheader("Extracted Results")
 
