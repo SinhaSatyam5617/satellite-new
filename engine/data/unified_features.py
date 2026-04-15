@@ -1,18 +1,13 @@
 import ee
 import streamlit as st
+
 def init_gee():
-    try:
-        ee.Initialize(project="satellite-new-489422")
-    except:
-        service_account = st.secrets["gee"]["service_account"]
-        private_key = st.secrets["gee"]["private_key"]
-
+    if not ee.data._initialized:
         credentials = ee.ServiceAccountCredentials(
-            service_account,
-            key_data=private_key
+            st.secrets["gee"]["service_account"],
+            key_data=st.secrets["gee"]["private_key"]
         )
-
-        ee.Initialize(credentials, project="satellite-new-489422")
+        ee.Initialize(credentials)
 # ----------------------------------
 # 🛠 HELPERS
 # ----------------------------------
