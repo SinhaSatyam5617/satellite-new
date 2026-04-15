@@ -22,7 +22,7 @@ import folium
 import streamlit as st
 
 def show():
-    st.title("🧠 Geo AI Analyzer")
+    st.title("Geo AI Analyzer")
 
 # ----------------------------------
 # 🎨 CONFIG
@@ -46,7 +46,7 @@ st.markdown("---")
 # ----------------------------------
 # MAP
 # ----------------------------------
-st.subheader("🗺️ Select Location")
+st.subheader(" Select Location")
 
 m = folium.Map(location=[26.85, 80.95], zoom_start=5)
 map_data = st_folium(m, height=400)
@@ -60,7 +60,7 @@ if map_data and map_data.get("last_clicked"):
 # ----------------------------------
 # DATE
 # ----------------------------------
-st.subheader("📅 Date Range")
+st.subheader(" Date Range")
 
 col1, col2 = st.columns(2)
 start_date = col1.date_input("Start Date", datetime(2023, 1, 1))
@@ -76,7 +76,7 @@ question = st.text_area("", placeholder="e.g. Is this area good for farming in M
 # ----------------------------------
 # RUN
 # ----------------------------------
-if st.button("🚀 Analyze Location", use_container_width=True):
+if st.button(" Analyze Location", use_container_width=True):
 
     if lat is None:
         st.warning("Select location")
@@ -151,14 +151,14 @@ if st.button("🚀 Analyze Location", use_container_width=True):
             c1.metric("Risk Level", ai.get("risk_level", "N/A"))
             c2.metric("Suitability Score", ai.get("suitability_score", 0))
 
-            st.markdown("### 🧠 Summary")
+            st.markdown("### Summary")
             st.write(ai.get("summary", ""))
 
-            st.markdown("### 📊 Key Factors")
+            st.markdown("### Key Factors")
             for f in ai.get("key_factors") or []:
                 st.write(f"- {f}")
 
-            st.markdown("### ✅ Recommendations")
+            st.markdown("###  Recommendations")
             for r in ai.get("recommendations") or []:
                 st.write(f"- {r}")
 
