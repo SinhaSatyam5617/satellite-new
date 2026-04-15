@@ -72,25 +72,20 @@ with col1:
     st.write("Analyze vegetation health using NDVI from satellite data. Detect deforestation, crop stress, and environmental degradation trends.")
 
     st.subheader("📊 Time-Series Climate Analysis")
-    st.write("Track rainfall, temperature, and vegetation changes over time.  
-    Identify trends, anomalies, and seasonal climate patterns.")
+    st.write("Track rainfall, temperature, and vegetation changes over time.Identify trends, anomalies, and seasonal climate patterns.")
 
     st.subheader("🔍 GeoRisk Time Explorer")
-    st.write("Compare satellite data between two dates to highlight environmental changes.  
-    Useful for disaster impact and urban expansion analysis.")
+    st.write("Compare satellite data between two dates to highlight environmental changes.Useful for disaster impact and urban expansion analysis.")
 
 with col2:
     st.subheader("⚠️ GeoRisk AI Engine")
-    st.write("Predict environmental risks like floods, droughts, and heatwaves.  
-    Uses ML models with satellite data for risk scoring and insights.")
+    st.write("Predict environmental risks like floods, droughts, and heatwaves. Uses ML models with satellite data for risk scoring and insights.")
 
     st.subheader("🌫️ Environmental Intelligence")
-    st.write("Combine AQI and weather data with satellite insights.  
-    Get a complete view of environmental conditions.")
+    st.write("Combine AQI and weather data with satellite insights.Get a complete view of environmental conditions.")
 
     st.subheader("🤖 GeoAI Analyzer")
-    st.write("Query environmental data using AI-driven analysis and insights generation.  
-    Supports intelligent interpretation of satellite-derived features.")
+    st.write("Query environmental data using AI-driven analysis and insights generation.Supports intelligent interpretation of satellite-derived features.")
 
 st.divider()
 
