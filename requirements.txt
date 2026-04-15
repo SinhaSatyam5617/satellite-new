@@ -9,3 +9,4 @@ openai
 setuptools==68.0.0
 joblib
 xgboost
+scikit-learn
