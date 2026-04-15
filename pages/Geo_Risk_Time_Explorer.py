@@ -31,7 +31,7 @@ load_gee()
 
 # ---------------- UI ----------------
 st.set_page_config(layout="wide")
-st.title("⚠️ Geo-Risk Time Explorer")
+st.title(" Geo-Risk Time Explorer")
 
 st.subheader("Enter 4 Coordinates")
 
