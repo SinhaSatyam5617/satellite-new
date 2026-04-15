@@ -1,4 +1,3 @@
-
 # 🧠 FIX PATH
 # ----------------------------------
 import sys, os
@@ -18,18 +17,24 @@ from engine.data.unified_features import get_unified_features
 from langchain_openai import ChatOpenAI
 
 
+# ----------------------------------
+# 🔑 API KEY (FIXED)
+# ----------------------------------
 api_key = st.secrets.get("OPENAI_API_KEY")
+
+if not api_key:
+    raise ValueError("OPENAI_API_KEY not found in Streamlit secrets")
+
 
 # ----------------------------------
 # 🤖 LLM SETUP
 # ----------------------------------
-api_key = st.secrets.get("OPENAI_API_KEY") 
-
 llm = ChatOpenAI(
     model="gpt-4o-mini",
     temperature=0.3,
     api_key=api_key
 )
+
 
 # ----------------------------------
 # 🧠 MONTH DETECTION
@@ -94,7 +99,6 @@ def run_ai(lat, lon, question, start_date=None, end_date=None):
             "temperature": safe_mean([x["temperature"] for x in all_data]),
             "lst": safe_mean([x["lst"] for x in all_data]),
 
-            # MULTI-POLLUTION
             "pollution": {
                 "no2": safe_mean([x["pollution"]["no2"] for x in all_data]),
                 "co": safe_mean([x["pollution"]["co"] for x in all_data]),
@@ -123,7 +127,7 @@ def run_ai(lat, lon, question, start_date=None, end_date=None):
         mode = "Current (recent 30-day window)"
 
     # ----------------------------------
-    # 🧠 PROMPT (PRO JSON)
+    # 🧠 PROMPT
     # ----------------------------------
     prompt = f"""
 You are a professional environmental intelligence analyst.
@@ -160,9 +164,6 @@ Return JSON ONLY:
         response = llm.invoke(prompt)
         raw = response.content
 
-        # ----------------------------------
-        # 🧠 SAFE JSON PARSE
-        # ----------------------------------
         try:
             parsed = json.loads(raw)
             return parsed
@@ -183,4 +184,3 @@ Return JSON ONLY:
             "key_factors": [],
             "recommendations": []
         }
-    print("API KEY:", api_key)
