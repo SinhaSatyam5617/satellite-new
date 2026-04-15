@@ -106,7 +106,7 @@ st.divider()
 # -------------------------
 # BEST PRACTICES
 # -------------------------
-st.header("💡 Best Practices")
+st.header("Best Practices")
 
 st.markdown("""
 - Use **small regions for faster results**
