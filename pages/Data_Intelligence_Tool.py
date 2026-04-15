@@ -9,7 +9,7 @@ from engine.data.gee_init import init_gee
 # PAGE FUNCTION
 # -----------------------------
 def show():
-    st.title("📊 Data Intelligence Tool")
+    st.title(" Data Intelligence Tool")
 
 # -----------------------------
 # 🌍 INIT (FIXED)
