@@ -20,7 +20,7 @@ from engine.data.unified_features import get_unified_features
 import streamlit as st
 
 def show():
-    st.title("📈 Time-Series Analyzer")
+    st.title("Time-Series Analyzer")
 
 # SAFE AI (optional)
 try:
@@ -30,7 +30,7 @@ except:
     AI_AVAILABLE = False
 
 # ----------------------------------
-# 🎨 PAGE CONFIG
+#  PAGE CONFIG
 # ----------------------------------
 st.set_page_config(layout="wide")
 
@@ -44,7 +44,7 @@ st.markdown("---")
 # ----------------------------------
 # 🗺️ MAP
 # ----------------------------------
-st.subheader("🗺️ Select Location")
+st.subheader("Select Location")
 
 m = folium.Map(location=[26.85, 80.95], zoom_start=5)
 map_data = st_folium(m, height=400)
@@ -61,7 +61,7 @@ st.markdown("---")
 # ----------------------------------
 # 📅 DATE RANGE
 # ----------------------------------
-st.subheader("📅 Select Date Range")
+st.subheader(" Select Date Range")
 
 col1, col2 = st.columns(2)
 
@@ -71,10 +71,10 @@ end_date = col2.date_input("End Date", datetime.today())
 # ----------------------------------
 # 🚀 RUN
 # ----------------------------------
-if st.button("📊 Analyze Trends", use_container_width=True):
+if st.button(" Analyze Trends", use_container_width=True):
 
     if lat is None:
-        st.warning("⚠️ Please select a location")
+        st.warning("⚠️Please select a location")
         st.stop()
 
     if start_date >= end_date:
@@ -114,7 +114,7 @@ if st.button("📊 Analyze Trends", use_container_width=True):
             # NO DATA
             # ----------------------------------
             if len(ndvi) == 0:
-                st.error("❌ No valid satellite data")
+                st.error(" No valid satellite data")
                 st.stop()
 
             # ----------------------------------
@@ -127,7 +127,7 @@ if st.button("📊 Analyze Trends", use_container_width=True):
                 "Temperature": temp
             }).sort_values("Date")
 
-            st.success("Data Loaded ✅")
+            st.success("Data Loaded ")
 
             # ----------------------------------
             # CHART
@@ -163,16 +163,16 @@ if st.button("📊 Analyze Trends", use_container_width=True):
             risks = []
 
             if avg_ndvi < 0.3:
-                risks.append("🌾 Drought risk")
+                risks.append(" Drought risk")
 
             if np.mean(rain) > 20:
-                risks.append("🌧️ Flood risk")
+                risks.append(" Flood risk")
 
             if slope < -0.01:
-                risks.append("📉 Vegetation declining")
+                risks.append("Vegetation declining")
 
             if not risks:
-                risks.append("✅ Stable conditions")
+                risks.append(" Stable conditions")
 
             for r in risks:
                 st.write(f"- {r}")
@@ -182,7 +182,7 @@ if st.button("📊 Analyze Trends", use_container_width=True):
             # ----------------------------------
             # 🤖 AI (SAFE TEXT MODE)
             # ----------------------------------
-            st.subheader("🤖 AI Insight")
+            st.subheader("AI Insight")
 
             if AI_AVAILABLE:
                 try:
