@@ -115,4 +115,3 @@ st.markdown("""
 - Use Reset button if app behaves unexpectedly
 """)
 
-st.success("✅ Following these steps ensures smooth usage of the platform.")
