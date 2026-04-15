@@ -6,7 +6,10 @@ from datetime import datetime, timedelta
 # 🌍 INIT GEE (FINAL)
 # ----------------------------------
 def init_gee():
-    if not ee.data._initialized:
+    try:
+        # ✅ check if already initialized
+        ee.Number(1).getInfo()
+    except:
         credentials = ee.ServiceAccountCredentials(
             st.secrets["gee"]["service_account"],
             key_data=st.secrets["gee"]["private_key"]
