@@ -4,18 +4,18 @@ ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
 sys.path.append(ROOT_DIR)
 
 import ee
-try:
-    ee.Initialize(project='satellite-new-489422')
-except:
-    ee.Authenticate()
-    ee.Initialize(project='satellite-new-489422')
-
 import joblib
 from datetime import datetime
+
+# ✅ IMPORT CLEAN INIT
+from engine.data.gee_init import init_gee
 
 from engine.li_models.feature_builder_li import build_feature_row_range
 from engine.location_intelligence.risk_engine import classify_risks
 
+# -----------------------------
+# LOAD MODEL
+# -----------------------------
 MODEL_PATH = os.path.join(ROOT_DIR, "li_models", "xgb_multi_model.pkl")
 model = joblib.load(MODEL_PATH)
 
@@ -23,11 +23,14 @@ model = joblib.load(MODEL_PATH)
 def predict_location_range(lat, lon, start_date_str, end_date_str):
 
     try:
+        # 🔥 CRITICAL FIX (INIT GEE HERE)
+        init_gee()
+
         start_date = datetime.strptime(start_date_str, "%Y-%m-%d")
         end_date = datetime.strptime(end_date_str, "%Y-%m-%d")
 
         # -----------------------------
-        # BUILD FEATURES (MULTI-DAY)
+        # BUILD FEATURES
         # -----------------------------
         features, raw = build_feature_row_range(lat, lon, start_date, end_date)
 
