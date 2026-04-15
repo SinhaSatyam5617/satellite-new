@@ -21,8 +21,6 @@ st.subheader("AI-Based Satellite Analysis for Climate Change & Environmental Sus
 st.markdown("""
 An integrated GeoAI system leveraging **satellite imagery, machine learning, and geospatial analytics**  
 to monitor environmental changes, predict risks, and support data-driven decision-making.
-
-💡 *Transforming Earth observation data into actionable intelligence.*
 """)
 
 st.divider()
@@ -52,10 +50,10 @@ st.header("Our Approach")
 st.markdown("""
 We combine:
 
-- 🛰️ Satellite Data (NDVI, rainfall, temperature, pollution)  
-- 🤖 Machine Learning for prediction  
-- 📊 Time-series analysis for trend detection  
-- 🌍 GeoAI for intelligent insights  
+-  Satellite Data (NDVI, rainfall, temperature, pollution)  
+-  Machine Learning for prediction  
+-  Time-series analysis for trend detection  
+-  GeoAI for intelligent insights  
 
 Result: A unified environmental intelligence platform.
 """)
@@ -71,23 +69,29 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("🌱 Satellite Vegetation Module")
-    st.write("Analyze vegetation health using NDVI and detect environmental changes.")
+    st.write("Analyze vegetation health using NDVI from satellite data.  
+    Detect deforestation, crop stress, and environmental degradation trends.")
 
     st.subheader("📊 Time-Series Climate Analysis")
-    st.write("Track environmental variables over time to identify trends.")
+    st.write("Track rainfall, temperature, and vegetation changes over time.  
+    Identify trends, anomalies, and seasonal climate patterns.")
 
     st.subheader("🔍 GeoRisk Time Explorer")
-    st.write("Compare satellite data across dates for change detection.")
+    st.write("Compare satellite data between two dates to highlight environmental changes.  
+    Useful for disaster impact and urban expansion analysis.")
 
 with col2:
     st.subheader("⚠️ GeoRisk AI Engine")
-    st.write("Predict environmental risks like floods and heatwaves.")
+    st.write("Predict environmental risks like floods, droughts, and heatwaves.  
+    Uses ML models with satellite data for risk scoring and insights.")
 
     st.subheader("🌫️ Environmental Intelligence")
-    st.write("Integrate AQI and weather data with satellite insights.")
+    st.write("Combine AQI and weather data with satellite insights.  
+    Get a complete view of environmental conditions.")
 
     st.subheader("🤖 GeoAI Analyzer")
-    st.write("Generate AI-driven insights from environmental data.")
+    st.write("Query environmental data using AI-driven analysis and insights generation.  
+    Supports intelligent interpretation of satellite-derived features.")
 
 st.divider()
 
