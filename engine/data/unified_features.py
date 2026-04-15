@@ -10,7 +10,7 @@ from engine.data.gee_init import init_gee
 # ----------------------------------
 def get_date_range(start_date=None, end_date=None, days=30):
     if start_date and end_date:
-    return str(start_date), str(end_date)
+        return str(start_date), str(end_date)   # ✅ FIXED INDENT
 
     end = datetime.today()
     start = end - timedelta(days=days)
@@ -24,7 +24,7 @@ def get_date_range(start_date=None, end_date=None, days=30):
 def get_ndvi(geom, start, end):
     collection = (
         ee.ImageCollection("MODIS/061/MOD13Q1")
-        .filterDate(start, end)
+        .filterDate(start, str(end))
         .select("NDVI")
     )
 
@@ -45,7 +45,7 @@ def get_ndvi(geom, start, end):
 def get_rainfall(geom, start, end):
     collection = (
         ee.ImageCollection("UCSB-CHG/CHIRPS/DAILY")
-        .filterDate(start, end)
+        .filterDate(str(start), str(end))
     )
 
     image = collection.sum()
@@ -65,7 +65,7 @@ def get_rainfall(geom, start, end):
 def get_temperature(geom, start, end):
     collection = (
         ee.ImageCollection("MODIS/061/MOD11A2")
-        .filterDate(start, end)
+        .filterDate(str(start), str(end))
         .select("LST_Day_1km")
     )
 
@@ -77,7 +77,8 @@ def get_temperature(geom, start, end):
         scale=1000
     ).get("LST_Day_1km")
 
-    return value.getInfo() / 50 if value else None
+    val = value.getInfo() if value else None
+    return val / 50 if val else None   # ✅ SAFE
 
 
 # ----------------------------------
@@ -86,7 +87,7 @@ def get_temperature(geom, start, end):
 def get_pollution(geom, start, end):
     collection = (
         ee.ImageCollection("COPERNICUS/S5P/OFFL/L3_NO2")
-        .filterDate(start, end)
+        .filterDate(str(start), str(end))
         .select("NO2_column_number_density")
     )
 
@@ -110,6 +111,10 @@ def get_unified_features(lat, lon, start_date=None, end_date=None, days=30):
     init_gee()
 
     start, end = get_date_range(start_date, end_date, days)
+
+    # 🔥 FORCE STRING (FINAL SAFETY)
+    start = str(start)
+    end = str(end)
 
     geom = ee.Geometry.Point([lon, lat]).buffer(5000)
 
