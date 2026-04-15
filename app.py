@@ -14,7 +14,7 @@ with col2:
 # -------------------------
 # HERO SECTION
 # -------------------------
-st.title(" GeoAI Platform for Climate Intelligence")
+st.title("Geospatial AI Platform for Environmental Intelligence")
 
 st.subheader("AI-Based Satellite Analysis for Climate Change & Environmental Sustainability")
 
