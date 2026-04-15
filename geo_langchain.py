@@ -12,7 +12,6 @@ from datetime import datetime
 import numpy as np
 import json
 import streamlit as st
-import os
 
 from engine.data.unified_features import get_unified_features
 from langchain_openai import ChatOpenAI
@@ -21,7 +20,7 @@ from langchain_openai import ChatOpenAI
 # ----------------------------------
 # 🔑 API KEY (FIXED)
 # ----------------------------------
-api_key = os.getenv("OPENAI_API_KEY")
+api_key = st.secrets("OPENAI_API_KEY")
 
 # ----------------------------------
 # 🤖 LLM SETUP
