@@ -1,9 +1,6 @@
 import sys
 import os
 
-# -----------------------------
-# PATH FIX
-# -----------------------------
 ROOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
@@ -12,14 +9,7 @@ import streamlit as st
 import pydeck as pdk
 import pandas as pd
 import ee
-import streamlit as st
 
-def show():
-    st.title("⚠️ Geo-Risk Time Explorer")
-
-# ======================
-# IMPORTS
-# ======================
 from engine.georisk_ai.gee import init_gee
 from engine.georisk_ai.timeseries import (
     get_ndvi_timeseries_images,
@@ -32,32 +22,20 @@ from engine.georisk_ai.risk import (
     generate_insight
 )
 
-# ======================
-# INIT GEE
-# ======================
+# ✅ INIT ONCE
 @st.cache_resource
 def load_gee():
     init_gee()
 
 load_gee()
 
-# ======================
-# UI
-# ======================
+# ---------------- UI ----------------
 st.set_page_config(layout="wide")
-st.title(" Geo-Risk Time Explorer")
-st.markdown("""
-This module performs time-series environmental analysis using satellite imagery.  
-It extracts vegetation, water, and built-up indicators from Sentinel-2 data and computes a composite environmental risk score.  
-All outputs are derived from real satellite acquisition dates and spatial aggregation over the selected polygon.
-""")
-# ======================
-# INPUT: POLYGON
-# ======================
-st.subheader("📐 Enter 4 Coordinates (Polygon)")
+st.title("⚠️ Geo-Risk Time Explorer")
+
+st.subheader("Enter 4 Coordinates")
 
 coords = []
-
 for i in range(4):
     col1, col2 = st.columns(2)
     lat = col1.number_input(f"Lat {i+1}", value=26.85 + i * 0.01)
@@ -66,54 +44,35 @@ for i in range(4):
 
 polygon = coords
 
-# ======================
-# LOAD TIME SERIES
-# ======================
+# ---------------- LOAD ----------------
 if st.button("Load Time Series"):
 
-    with st.spinner("Fetching satellite time series..."):
+    with st.spinner("Loading..."):
         ts_images = get_ndvi_timeseries_images(polygon)
 
     if not ts_images:
-        st.error("❌ No time-series data available")
+        st.error("No data")
         st.stop()
 
     st.session_state["ts_images"] = ts_images
 
-# ======================
-# SAFE VALUE
-# ======================
+
+# ---------------- SAFE GET ----------------
 def safe_get(val):
     try:
         return val.getInfo() if val else 0
     except:
         return 0
 
-# ======================
-# FUNCTION: GET INDICES
-# ======================
-def get_indices_from_image(image, geometry):
+
+# ---------------- INDEX CALC ----------------
+def get_indices(image, geometry):
 
     region = ee.Geometry.Polygon(geometry)
 
-    # 🚨 CHECK BANDS FIRST
-    band_names = image.bandNames().getInfo()
-
-    if not band_names:
-        return {"ndvi": 0, "ndwi": 0, "ndbi": 0}
-
-    # ✅ Ensure NDVI exists
-    if "NDVI" not in band_names:
-        try:
-            ndvi = image.normalizedDifference(['B8', 'B4']).rename('NDVI')
-            image = image.addBands(ndvi)
-        except:
-            return {"ndvi": 0, "ndwi": 0, "ndbi": 0}
-
-    # SAFE CALCULATIONS
-    ndvi = image.select('NDVI')
-    ndwi = image.normalizedDifference(['B3', 'B8']).rename('NDWI')
-    ndbi = image.normalizedDifference(['B11', 'B8']).rename('NDBI')
+    ndvi = image.normalizedDifference(['B8','B4']).rename('NDVI')
+    ndwi = image.normalizedDifference(['B3','B8']).rename('NDWI')
+    ndbi = image.normalizedDifference(['B11','B8']).rename('NDBI')
 
     combined = ndvi.addBands([ndwi, ndbi])
 
@@ -131,124 +90,75 @@ def get_indices_from_image(image, geometry):
         "ndbi": safe_get(stats.get('NDBI'))
     }
 
-# ======================
-# MAIN
-# ======================
+
+# ---------------- MAIN ----------------
 if "ts_images" in st.session_state:
 
     ts_images = st.session_state["ts_images"]
 
-    index = st.slider(
-        "📅 Time Slider",
-        0,
-        len(ts_images) - 1,
-        0
-    )
+    index = st.slider("Time", 0, len(ts_images)-1, 0)
 
     selected = ts_images[index]
+    st.write(f"Date: {selected['date']}")
 
-    st.markdown(f"### 📅 Date: `{selected['date']}`")
+    image = get_image_by_index(polygon, selected["index"])
 
-    with st.spinner("Processing satellite data..."):
+    if image is None:
+        st.warning("No image")
+        st.stop()
 
-        # -----------------------------
-        # IMAGE FETCH
-        # -----------------------------
-        image = get_image_by_index(polygon, selected["index"])
+    grid = sample_ndvi_from_image(image, polygon)
 
-        if image is None:
-            st.warning("❌ No image available for this date")
-            st.stop()
+    indices = get_indices(image, polygon)
 
-        # -----------------------------
-        # GRID
-        # -----------------------------
-        grid = sample_ndvi_from_image(image, polygon)
+    risk = calculate_risk(
+        indices["ndvi"],
+        indices["ndwi"],
+        indices["ndbi"]
+    )
 
-        if not grid:
-            st.warning("❌ No spatial data found")
-            st.stop()
+    label = risk_label(risk)
 
-        # -----------------------------
-        # INDICES
-        # -----------------------------
-        indices = get_indices_from_image(image, polygon)
+    insight = generate_insight(
+        indices["ndvi"],
+        indices["ndwi"],
+        indices["ndbi"],
+        risk
+    )
 
-        # -----------------------------
-        # RISK
-        # -----------------------------
-        risk = calculate_risk(
-            indices["ndvi"],
-            indices["ndwi"],
-            indices["ndbi"]
-        )
-
-        label = risk_label(risk)
-
-        insight = generate_insight(
-            indices["ndvi"],
-            indices["ndwi"],
-            indices["ndbi"],
-            risk
-        )
-
-    # ======================
-    # METRICS
-    # ======================
+    # ---------------- METRICS ----------------
     c1, c2, c3, c4 = st.columns(4)
 
-    c1.metric("Risk Score", risk)
+    c1.metric("Risk", risk)
     c2.metric("NDVI", round(indices["ndvi"], 3))
     c3.metric("NDWI", round(indices["ndwi"], 3))
     c4.metric("NDBI", round(indices["ndbi"], 3))
 
-    st.markdown(f"### {label}")
+    st.markdown(label)
     st.info(insight)
 
-    # ======================
-    # MAP
-    # ======================
+    # ---------------- MAP ----------------
     df = pd.DataFrame(grid)
 
-    if df.empty:
-        st.warning("No map data")
-        st.stop()
-
-    hex_layer = pdk.Layer(
-        "HexagonLayer",
-        data=df,
-        get_position='[lon, lat]',
-        radius=120,
-        elevation_scale=40,
-        get_elevation='value',
-        get_fill_color='[255 * (1 - value), 255 * value, 80]',
-        extruded=True,
-        pickable=True,
-    )
-
-    polygon_layer = pdk.Layer(
-        "PolygonLayer",
-        data=[{"polygon": polygon}],
-        get_polygon="polygon",
-        get_line_color=[255, 0, 0],
-        line_width_min_pixels=2,
-        get_fill_color=[0, 0, 0, 20],
-    )
-
-    view = pdk.ViewState(
-        latitude=float(df["lat"].mean()),
-        longitude=float(df["lon"].mean()),
-        zoom=12
-    )
-
-    st.subheader("🧊 NDVI Spatial Map")
-
-    st.pydeck_chart(
-        pdk.Deck(
-            layers=[polygon_layer, hex_layer],
-            initial_view_state=view
+    if not df.empty:
+        layer = pdk.Layer(
+            "HexagonLayer",
+            data=df,
+            get_position='[lon, lat]',
+            radius=120,
+            elevation_scale=40,
+            get_elevation='value',
+            get_fill_color='[255*(1-value),255*value,80]',
+            extruded=True
         )
-    )
+
+        view = pdk.ViewState(
+            latitude=float(df["lat"].mean()),
+            longitude=float(df["lon"].mean()),
+            zoom=12
+        )
+
+        st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view))
 
 st.markdown("### Processing Workflow")
 
