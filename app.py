@@ -5,14 +5,13 @@ st.set_page_config(layout="wide", page_title="GeoAI Platform")
 # -------------------------
 # HERO SECTION
 # -------------------------
-st.title("🌍 AI-Based Satellite Intelligence")
-st.subheader("For Climate Change & Environmental Sustainability")
+st.title("AI-Based Satellite Imagery for  Climate Change & Environmental Sustainability")
 
 st.markdown("""
 An integrated GeoAI platform that uses **satellite imagery, machine learning, and AI (LLM)**  
 to analyze environmental changes, predict risks, and support sustainable decision-making.
 
-💡 *Ask anything about Earth. Get AI-powered answers from satellite data.*
+ *Ask anything about Earth. Get AI-powered answers from satellite data.*
 """)
 
 st.divider()
@@ -20,12 +19,12 @@ st.divider()
 # -------------------------
 # TOOLS SECTION
 # -------------------------
-st.header("🧠 Core Tools")
+st.header(" Core Tools")
 
 col1, col2 = st.columns(2)
 
 with col1:
-    st.subheader("🌱 Satellite Vegetation Analyzer")
+    st.subheader("🌱 Satellite Vegetation Module")
     st.write("""
     Analyze vegetation health using NDVI from satellite data.  
     Detect deforestation, crop stress, and environmental degradation trends.
@@ -37,10 +36,10 @@ with col1:
     Identify trends, anomalies, and seasonal climate patterns.
     """)
 
-    st.subheader("🔍 Before vs After Change Detection")
+    st.subheader("🔍 GeoRisk Time Explorer")
     st.write("""
     Compare satellite data between two dates to highlight environmental changes.  
-    Useful for disaster impact and urban expansion analysis.
+    Useful for disaster impact and urban expansion analysis. Though we are looking through NDVI values here in this tool
     """)
 
 with col2:
@@ -56,7 +55,7 @@ with col2:
     Get a complete view of environmental conditions.
     """)
 
-    st.subheader("🤖 GeoAI Copilot")
+    st.subheader("🤖 GeoAI Analyzer")
     st.write("""
     Ask natural language queries like:  
     *“Rainfall trend in Chennai between Dec 1–10”*  
@@ -68,11 +67,11 @@ st.divider()
 # -------------------------
 # HOW TO USE
 # -------------------------
-st.header("⚙️ How to Use")
+st.header(" How to Use")
 
 st.markdown("""
 1. **Select a tool** from the sidebar  
-2. **Upload dataset or choose location**  
+2. **Choose location and range of dates(if given)**  
 3. Click **Analyze / Generate Insights**  
 4. View **data, charts, and AI insights**
 """)
@@ -82,7 +81,7 @@ st.divider()
 # -------------------------
 # LLM USAGE
 # -------------------------
-st.header("🔑 AI (LLM) Integration")
+st.header(" AI (LLM) Integration")
 
 st.markdown("""
 This platform uses **OpenAI API** to:
@@ -91,13 +90,13 @@ This platform uses **OpenAI API** to:
 - Extract location, date, and parameters  
 - Generate insights and reports  
 
-📌 **Setup API Key:**
+ **Setup API Key:**
 """)
 
-st.code('export OPENAI_API_KEY="your_api_key_here"', language='bash')
+st.code('export OPENAI_API_KEY="your_api_key_here"', language='bash') - Though we have already done this part
 
 st.markdown("""
-💡 Best Practice:
+ Best Practice:
 - Use AI for **analysis, not raw data fetching**  
 - Always provide **clean structured data**  
 """)
@@ -108,10 +107,10 @@ st.divider()
 # FOOTER
 # -------------------------
 st.markdown("""
-### 🚀 Why This Platform Matters
+###  Why This Platform Matters
 
-- 🌍 Supports climate research  
-- 📊 Converts complex satellite data into simple insights  
-- ⚠️ Helps detect environmental risks early  
-- 🧠 Bridges gap between data & decision-making  
+- Supports climate research, make easy derivations  
+- Converts complex satellite data into simple insights  
+- Can help study environmental risks thoroughly  
+- Bridges gap between data & decision-making  
 """)
