@@ -20,7 +20,7 @@ from langchain_openai import ChatOpenAI
 # ----------------------------------
 # 🔑 API KEY (FIXED)
 # ----------------------------------
-api_key = st.secrets("OPENAI_API_KEY")
+api_key = st.secrets["OPENAI_API_KEY"]
 
 # ----------------------------------
 # 🤖 LLM SETUP
