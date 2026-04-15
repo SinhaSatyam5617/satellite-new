@@ -94,5 +94,3 @@ The aim is to evolve this platform into a **full-scale GeoAI decision intelligen
 """)
 
 st.divider()
-
-st.success("🚀 This roadmap ensures continuous improvement toward a scalable, intelligent, and research-driven GeoAI platform.")
