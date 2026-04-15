@@ -10,7 +10,7 @@ from engine.data.gee_init import init_gee
 # ----------------------------------
 def get_date_range(start_date=None, end_date=None, days=30):
     if start_date and end_date:
-        return start_date, end_date
+    return str(start_date), str(end_date)
 
     end = datetime.today()
     start = end - timedelta(days=days)
